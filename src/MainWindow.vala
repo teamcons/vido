@@ -79,6 +79,12 @@ public class MainWindow : Hdy.Window {
         video_label.get_style_context ().add_class ("videolabel");
         video_label.margin_top = 10;
 
+        var revealer = new Gtk.Revealer () {
+            child = video_label,
+            reveal_child = false
+        };
+        revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_DOWN);
+
         // Get info button
         var info_button = new Gtk.Button.with_label (_("Get Video Info"));
         info_button.sensitive = false;
@@ -100,7 +106,7 @@ public class MainWindow : Hdy.Window {
         grid.attach (audio_only, 2, 1, 2, 1);
         grid.attach (with_subtitles, 4, 1, 2, 1);
         grid.attach (info_button, 0, 2, 7, 1);
-        grid.attach (video_label, 0, 3, 7, 1);
+        grid.attach (revealer, 0, 3, 7, 1);
         grid.attach (download_button, 0, 4, 7, 1);
 
         var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -203,8 +209,11 @@ public class MainWindow : Hdy.Window {
                     // Triggered when the child indicated by child_pid exits
                     if (status == 0) {
                         video_label.label = video_info;
+                        revealer.reveal_child = true;
+
                     } else {
                         video_label.label = "";
+                        revealer.reveal_child = false;
 
                         var error_dialog = new Granite.MessageDialog.with_image_from_icon_name (
                             _("Unable to fetch the video info"),
