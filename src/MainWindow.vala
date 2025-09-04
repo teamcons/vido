@@ -52,6 +52,9 @@ public class MainWindow : Hdy.Window {
         url_input.placeholder_text = _("Enter URL…");
         url_input.input_purpose = Gtk.InputPurpose.URL;
 
+        url_input.primary_icon_name = "edit-paste-symbolic";
+        url_input.primary_icon_tooltip_text = _("Click to paste URL from clipboard");
+
         // Add a clear icon only when there are some text(s) in the entry
         url_input.changed.connect (() => {
             if (url_input.text != "") {
@@ -127,7 +130,23 @@ public class MainWindow : Hdy.Window {
         });
 
         url_input.icon_press.connect ((pos, event) => {
-            if (pos == Gtk.EntryIconPosition.SECONDARY) {
+            if (icon_pos == Gtk.EntryIconPosition.PRIMARY) {
+                var clipboard = Gdk.Display.get_default ().get_clipboard ();
+                clipboard.read_text_async.begin ((null), (obj, res) => {
+                    try {
+                        var pasted_text = clipboard.read_text_async.end (res);
+                        /* Clean up a bit this mess as the user is likely to have copied unwanted strings with it */
+                        string[] clutter_chars = {" ", "\n", ";"};
+                        foreach (var clutter in clutter_chars) {
+                            pasted_text = pasted_text.replace (clutter, "");
+                        }
+                        url_input.text = pasted_text;
+
+                    } catch (Error e) {
+                        print ("Cannot access clipboard: " + e.message);
+                    }
+                });
+            } else {
                 info_button.label = _("Get Video Info");
                 video_label.label = "";
                 url_input.text = "";
