@@ -106,7 +106,12 @@ public class MainWindow : Hdy.Window {
         var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         main_box.add (header);
         main_box.add (grid);
-        add (main_box);
+
+        var handle = new Gtk.WindowHandle () {
+            child = main_box
+        };
+
+        add (handle);
 
         var notification = new Notification (_("Download Completed!"));
         notification.set_body (_("Click here to see in the destination folder"));
