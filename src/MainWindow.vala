@@ -34,8 +34,11 @@ public class MainWindow : Hdy.Window {
         // Add CSS file
         var css_provider = new Gtk.CssProvider ();
         css_provider.load_from_resource ("/com/github/bernardodsanderson/vido/style.css");
-        Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (),
-                                                    css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        Gtk.StyleContext.add_provider_for_display (
+            Gdk.Display.get_default (),
+            css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        );
 
         // Header
         var header = new Hdy.HeaderBar () {
@@ -43,12 +46,12 @@ public class MainWindow : Hdy.Window {
             has_subtitle = false,
             title = "VIDO"
         };
-        header.get_style_context ().add_class (Granite.STYLE_CLASS_DEFAULT_DECORATION);
-        header.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+        header.add_css_class (Granite.STYLE_CLASS_DEFAULT_DECORATION);
+        header.add_css_class (Granite.STYLE_CLASS_FLAT);
 
         // URL input
         var url_input = new Gtk.Entry ();
-        url_input.get_style_context ().add_class ("inputurl");
+        url_input.add_css_class ("inputurl");
         url_input.placeholder_text = _("Enter URL…");
         url_input.input_purpose = Gtk.InputPurpose.URL;
 
@@ -76,7 +79,7 @@ public class MainWindow : Hdy.Window {
 
         // Video Label
         var video_label = new Gtk.Label ("");
-        video_label.get_style_context ().add_class ("videolabel");
+        video_label.add_css_class ("videolabel");
         video_label.margin_top = 10;
 
         // Get info button
@@ -86,8 +89,8 @@ public class MainWindow : Hdy.Window {
         // download_button button
         var download_button = new Gtk.Button.with_label (_("Download"));
         download_button.margin_top = 10;
-        download_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-        download_button.get_style_context ().add_class ("downloadbutton");
+        download_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+        download_button.add_css_class ("downloadbutton");
         download_button.sensitive = false;
 
         var grid = new Gtk.Grid ();
