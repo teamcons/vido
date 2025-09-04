@@ -136,6 +136,7 @@ public class MainWindow : Hdy.Window {
             if (pos == Gtk.EntryIconPosition.SECONDARY) {
                 info_button.label = _("Get Video Info");
                 video_label.label = "";
+                revealer.reveal_child = false;
                 url_input.text = "";
                 download_button.label = _("Download");
                 with_subtitles.active = false;
