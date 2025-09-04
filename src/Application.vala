@@ -54,17 +54,7 @@ public class Application : Gtk.Application {
         });
         add_action (open_action);
 
-        int window_x, window_y;
-        settings.get ("window-position", "(ii)", out window_x, out window_y);
-
         window = new MainWindow (this);
-
-        if (window_x != -1 || window_y != -1) { // Not a first time launch
-            window.move (window_x, window_y);
-        } else { // First time launch
-            window.window_position = Gtk.WindowPosition.CENTER;
-        }
-
         window.show_all ();
     }
 
