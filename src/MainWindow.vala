@@ -31,6 +31,11 @@ public class MainWindow : Hdy.Window {
     construct {
         Hdy.init ();
 
+        var quit_action = new SimpleAction ("quit", null);
+        add_action (quit_action);
+        set_accels_for_action ("app.quit", {"<Control>q"});
+        quit_action.activate.connect (quit);
+
         // Add CSS file
         var css_provider = new Gtk.CssProvider ();
         css_provider.load_from_resource ("/com/github/bernardodsanderson/vido/style.css");
